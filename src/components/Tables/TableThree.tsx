@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { deleteOrder, fetchOrders } from '../../store/dataSlice';
-import { OrderStatus, PaymentMethod } from '../../types/data';
+import { deleteOrder, fetchOrders, setDeleteOrder } from '../../store/dataSlice';
+import { OrderStatus } from '../../types/data';
+import { Link } from 'react-router-dom';
 
 const TableThree = () => {
   const  dispatch =useAppDispatch()
@@ -12,13 +13,18 @@ const TableThree = () => {
   console.log(orders)
 
   const handleDelete=(id:string)=>{
-
     dispatch(deleteOrder(id))
-    dispatch(fetchOrders())
+    dispatch(setDeleteOrder({orderId:id}))
+ 
   }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
+      <div className="py-6 px-4 md:px-6 xl:px-7.5">
+        <h4 className="text-xl font-semibold text-black dark:text-white">
+          Orders
+        </h4>
+      </div>
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -50,7 +56,9 @@ const TableThree = () => {
                   <h5 className="font-medium text-black dark:text-white">
                     
                   </h5>
+                  <Link to={`/orders/${order?.id}`}>
                   <p className="text-sm">{order?.id}</p>
+                  </Link>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p className="text-sm">{order?.phoneNumber}</p>

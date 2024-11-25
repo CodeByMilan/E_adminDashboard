@@ -1,17 +1,20 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { APIAuthenticated } from '../../http';
+import { API } from '../../http';
 import { Category, Product } from '../../types/data';
-import { addProduct } from '../../store/dataSlice';
-import { useAppDispatch } from '../../store/hooks';
+import { AddProduct,addProduct } from '../../store/dataSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { authStatus } from '../../types/status';
 
 
-const FormLayout = () => {
+const AddProductPage = () => {
   const [categories,setCategories]=useState<Category[]>([])
+  const {status}=useAppSelector((state)=>state.datas)
+  const navigate=useNavigate()
   const dispatch = useAppDispatch()
   const fetchcategories=async ()=>{
-    const response = await APIAuthenticated.get('/admin/category');
+    const response = await API.get('/category');
     if(response.status==200){
       setCategories(response.data.data)
     }
@@ -20,20 +23,18 @@ const FormLayout = () => {
     }
 
   }
- 
-  const [data,setData]=useState<Product>({
+  const [data,setData]=useState<AddProduct>({
     productName:"",
     description:"",
     price:0,
     categoryId:"",
-    productImageUrl:"",
+    image:null,
     productQuantity:0,
-    userId:"",
   })
   useEffect(()=>{
     fetchcategories()
   },[])
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setData({
       ...data,
@@ -43,6 +44,10 @@ const FormLayout = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(addProduct(data))
+    if(status==authStatus.success){
+      navigate("/tables")
+    }
+    
   }
   return (
     <>
@@ -87,7 +92,7 @@ const FormLayout = () => {
               <div className="relative">
                 <input
                   type="number"
-                  name="productPrice"
+                  name="price"
                   id="price"
                   className="w-full pl-12 py-3 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Product Price"
@@ -99,7 +104,7 @@ const FormLayout = () => {
               <div className="relative">
                 <input
                   type="number"
-                  name="totalQuantity"
+                  name="productQuantity"
                   id="productQuantity"
                   className="w-full pl-12 py-3 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Stock Quantity"
@@ -133,7 +138,7 @@ const FormLayout = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
-              {categories.length>0 && categories.map((category)=>{
+              {categories?.length>0 && categories.map((category)=>{
                 return(
                   <option value={category.id}>{category.categoryName}</option>
                   )
@@ -155,4 +160,4 @@ const FormLayout = () => {
   );
 };
 
-export default FormLayout;
+export default AddProductPage;

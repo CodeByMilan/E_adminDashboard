@@ -20,13 +20,13 @@ export enum OrderStatus{
 }
 
 export interface Product{
-    id?:string,
+    id:string,
     productName:string,
     description:string,
     price:number,
     productImageUrl:string,
     productQuantity:number,
-    createdAt?:string,
+    createdAt:string,
     updatedAt?:string,
     categoryId:string,
     userId:string,
@@ -67,5 +67,7 @@ export interface OrderData{
     orders:OrderData[],
     status:authStatus,
     singleProduct:Product|null
+    category:Category[]
+    singleOrder:OrderData|null
 
 }

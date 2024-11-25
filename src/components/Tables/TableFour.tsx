@@ -1,83 +1,57 @@
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
-import { DeleteUser, fetchUsers, setDeleteUser } from '../../store/dataSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { deleteCategory, deleteOrder, fetchCategory, fetchOrders, setDeleteCategory, setDeleteOrder } from '../../store/dataSlice';
 
-
-
-const TableOne = () => {
+const TableFour = () => {
   const  dispatch =useAppDispatch()
-  const {users}=useAppSelector((state)=>state.datas)
+  const {category}=useAppSelector((state)=>state.datas)
   useEffect(()=>{
-    dispatch(fetchUsers())
+    dispatch(fetchCategory())
   },[])
+  console.log(category)
+
   const handleDelete=(id:string)=>{
-    dispatch(DeleteUser(id))
+    dispatch(deleteCategory(id))
+    dispatch(setDeleteCategory({categoryId:id}))
  
   }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-        User data
-      </h4>
-
-      <div className="flex flex-col">
-        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
-          <div className="p-2.5 xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              id
-            </h5>
-          </div>
-          <div className="p-2.5 text-center xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Username
-            </h5>
-          </div>
-       
-          <div className="hidden p-2.5 text-center sm:block xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              E-mail
-            </h5>
-          </div>
-          <div className="hidden p-2.5 text-center sm:block xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Created at
-            </h5>
-          </div>
-          <div className="hidden p-2.5 text-center sm:block xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Action
-            </h5>
-          </div>
-        </div>
-
-        {users.length>0 &&users.map((user, key) => (
-          <div
-            className={`grid grid-cols-3 sm:grid-cols-5 ${
-              key === users.length - 1
-                ? ''
-                : 'border-b border-stroke dark:border-strokedark'
-            }`}
-            key={key}
-          >
-            <div className="flex items-center gap-3 p-2.5 xl:p-5">
-
-              <p className="hidden text-black dark:text-white sm:block">
-                {user?.id}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-black dark:text-white">{user?.username}</p>
-            </div>
-
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-meta-3">{user.email}</p>
-            </div>
-
-            <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-              <p className="text-black dark:text-white">{new Date(user?.createdAt).toLocaleDateString()}</p>
-            </div>
-            <div  className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+      <div className="max-w-full overflow-x-auto">
+      <div className="py-6 px-4 md:px-6 xl:px-7.5">
+        <h4 className="text-xl font-semibold text-black dark:text-white">
+          Category
+        </h4>
+      </div>
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                categoryId
+              </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                Category Name
+              </th>    
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {category.length>0 &&category.map((category, key) => (
+              <tr key={key}>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <h5 className="font-medium text-black dark:text-white">
+                    
+                  </h5>
+                  <p className="text-sm">{category?.id}</p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-sm">{category?.categoryName}</p>
+                </td>
+        
+            
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <button className="hover:text-primary">
                       <svg
@@ -98,7 +72,7 @@ const TableOne = () => {
                         />
                       </svg>
                     </button>
-                    <button onClick={()=>handleDelete(user?.id)} className="hover:text-primary">
+                    <button onClick={()=>handleDelete(category?.id)} className="hover:text-primary">
                       <svg
                         className="fill-current"
                         width="18"
@@ -145,13 +119,14 @@ const TableOne = () => {
                       </svg>
                     </button>
                   </div>
-                  </div>
-              
-          </div>
-        ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
 
-export default TableOne;
+export default TableFour;

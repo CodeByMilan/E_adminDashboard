@@ -6,8 +6,7 @@ import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
+
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
@@ -16,6 +15,9 @@ import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import AddProductPage from './pages/Form/AddProduct';
+import AddCategoryPage from './pages/Form/AddCategory';
+import SingleOrderPage from './pages/SingleOrderPage';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -67,12 +69,23 @@ function App() {
           }
         />
         <Route
-          path="/forms/form-layout"
+          path="/forms/addProduct"
           element={
             <>
             <DefaultLayout>
-            <PageTitle title="Form Layout " />
-            <FormLayout />
+            <PageTitle title="Add product " />
+            <AddProductPage />
+            </DefaultLayout>
+            </>
+          }
+        />
+        <Route
+          path="/forms/addCategory"
+          element={
+            <>
+            <DefaultLayout>
+            <PageTitle title="Add Category " />
+            <AddCategoryPage/>
             </DefaultLayout>
             </>
           }
@@ -89,12 +102,12 @@ function App() {
           }
         />
         <Route
-          path="/settings"
+          path="/orders/:id"
           element={
             <>
              <DefaultLayout>
-             <PageTitle title="Settings " />
-             <Settings />
+             <PageTitle title="single order page" />
+             <SingleOrderPage />
              </DefaultLayout>
             </>
           }
