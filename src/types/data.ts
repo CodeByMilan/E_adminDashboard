@@ -16,6 +16,7 @@ export enum OrderStatus{
     DELIVERED="delivered",
     CANCELED="canceled",
     PREPARATION="preparation",
+    ALL="all"
 
 }
 
@@ -59,8 +60,36 @@ export interface OrderData{
     id:string,
     orderStatus:OrderStatus
 }
+export interface SingleOrder{
+    id: string,
+    quantity: number,
+    orderId: string,
+    createdAt : string,
+    Product: {
+        id: string,
+        productName: string,
+        price:number,
+    productImageUrl:string,
+    productQuantity:number,
+        categoryId:string,
+        Category: {
+            categoryName ? : string
+        }
+    },
+    Order: {
+        id:string,
+        phoneNumber: string,
+        shippingAddress: string,
+        totalAmount: number,
+        orderStatus: OrderStatus,
+        userId : string, 
+        Payment: {
+            paymentMethod: string,
+            paymentStatus: string
+        },
 
-
+    }
+}
  export interface Initialstate{
     products:Product[],
     users:User[],
@@ -68,6 +97,6 @@ export interface OrderData{
     status:authStatus,
     singleProduct:Product|null
     category:Category[]
-    singleOrder:OrderData|null
+    singleOrder:SingleOrder[]
 
 }

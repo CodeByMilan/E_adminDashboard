@@ -1,29 +1,42 @@
-import { useParams } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "../store/hooks"
-import { ChangeEvent, useEffect } from "react"
-import { fetchSingleOrder } from "../store/dataSlice"
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { fetchSingleOrder, handleOrderStatusById,} from '../store/dataSlice'
+import { OrderStatus } from '../types/data'
+import { socket } from '../App'
 
-const SingleOrderPage = () => {
-    const {id}=useParams()
-    const dispatch =useAppDispatch()
-
-    const {singleOrder}=useAppSelector((state)=>state.datas)
+const SingleOrder = () => {
+    const {id} = useParams()
+    const dispatch = useAppDispatch()
+    const {singleOrder:[order]} = useAppSelector((state)=>state.datas)
+    const [orderStatus,setOrderStatus] = useState(order?.Order?.orderStatus as string)
 
     useEffect(()=>{
         if(id){
+
             dispatch(fetchSingleOrder(id))
         }
-
     },[])
-console.log(singleOrder)
 
-const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)
+const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)=>{
+  setOrderStatus(e.target.value)
+  if(id){
+    socket.emit('updateOrderStatus',{
+      orderId:id,
+      orderStatus:e.target.value,
+      userId:order?.Order?.userId
+    })
+  dispatch(handleOrderStatusById(e.target.value as OrderStatus,id))
+
+  }
+}
+
   return (
     <div className="py-20 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
     
     <div className="flex justify-start item-start space-y-5 flex-col">
-      <h1 className="text-1xl dark:text-white lg:text-2xl font-semibold leading-7 lg:leading-9 text-gray-600">Order {singleOrder?.id}</h1>
-      <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{singleOrder}</p>
+      <h1 className="text-1xl dark:text-white lg:text-2xl font-semibold leading-7 lg:leading-9 text-gray-600">Order {id}</h1>
+      <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{order?.createdAt}</p>
     </div>
     <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
       <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
@@ -33,16 +46,16 @@ const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)
               <div className="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
               <div className="pb-4 md:pb-8 w-full md:w-40">
                 <img className="w-full hidden md:block"  alt="dress" />
-                <img className="w-full md:hidden" src=""alt="dress" />
+                <img className="w-full md:hidden" src={order?.Product?.productImageUrl} alt="dress" />
               </div>
               <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full pb-8 space-y-4 md:space-y-0">
                 <div className="w-full flex flex-col justify-start items-start space-y-8">
-                  <h3 className="text-xl dark:text-white xl:text-2xl font-semibold leading-6 text-gray-800">{}</h3>
+                  <h3 className="text-xl dark:text-white xl:text-2xl font-semibold leading-6 text-gray-800">{order?.Product?.productName}</h3>
                 </div>
                 <div className="flex justify-between space-x-8 items-start w-full">
-                  <p className="text-base dark:text-white xl:text-lg leading-6">Rs. {} </p>
-                  <p className="text-base dark:text-white xl:text-lg leading-6 text-gray-800">Qty: {} </p>
-                  <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">Rs.{} </p>
+                  <p className="text-base dark:text-white xl:text-lg leading-6">Rs. {order?.Product?.price} </p>
+                  <p className="text-base dark:text-white xl:text-lg leading-6 text-gray-800">Qty: {order?.quantity} </p>
+                  <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">Rs.{order?.Product?.price * order?.quantity} </p>
                 </div>
               </div>
             </div>
@@ -56,20 +69,20 @@ const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)
 
               <div className="flex justify-between items-center w-full">
                 <p className="text-base dark:text-white leading-4 text-gray-800">Payment Method</p>
-                <p className="text-base dark:text-gray-300 leading-4 text-gray-600"></p>
+                <p className="text-base dark:text-gray-300 leading-4 text-gray-600">{order?.Order?.Payment?.paymentMethod}</p>
               </div>
               <div className="flex justify-between items-center w-full">
                 <p className="text-base dark:text-white leading-4 text-gray-800">Payment Status</p>
-                <p className="text-base dark:text-gray-300 leading-4 text-gray-600"></p>
+                <p className="text-base dark:text-gray-300 leading-4 text-gray-600">{order?.Order?.Payment?.paymentStatus}</p>
               </div>
               <div className="flex justify-between items-center w-full">
                 <p className="text-base dark:text-white leading-4 text-gray-800">Order Status</p>
-                <p className="text-base dark:text-gray-300 leading-4 text-gray-600">{}</p>
+                <p className="text-base dark:text-gray-300 leading-4 text-gray-600">{order?.Order?.orderStatus}</p>
               </div>
             </div>
             <div className="flex justify-between items-center w-full">
               <p className="text-base dark:text-white font-semibold leading-4 text-gray-800">Total</p>
-              <p className="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">{}</p>
+              <p className="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">{100 + order?.quantity * order?.Product?.price}</p>
             </div>
           </div>
           <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
@@ -80,7 +93,7 @@ const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)
                   <img className="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
                 </div>
                 <div className="flex flex-col justify-start items-center">
-                  <p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">Delivery Charge<br /><span className="font-normal">Delivery withIn 24 Hours</span></p>
+                  <p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">Delivery Charge<br /><span className="font-normal">Delivery with 24 Hours</span></p>
                 </div>
               </div>
               <p className="text-lg font-semibold leading-6 dark:text-white text-gray-800">Rs 100</p>
@@ -97,8 +110,8 @@ const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)
             <div className="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
               <div className="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
               <p className="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">UserName : test</p>
-                <p className="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Address : {singleOrder?.shippingAddress}</p>
-                <p className="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">Phone:{singleOrder?.phoneNumber}</p>
+                <p className="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Address : {order?.Order?.shippingAddress}</p>
+                <p className="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">Phone :{order?.Order?.phoneNumber}</p>
               </div>
 
             </div>
@@ -108,7 +121,7 @@ const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)
        <div style={{display:'flex',flexDirection:'column',padding:'18px'}}>
        <div>
          <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Order Status</label>
-          <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  >
+          <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={handleOrderStatus} >
           {/* <option value={filteredOrder?.orderStatus}>{filteredOrder?.orderStatus}</option> */}
           <option value="pending">pending</option>
           <option value="delivered">Delivered</option>
@@ -146,4 +159,4 @@ const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)
   )
 }
 
-export default SingleOrderPage
+export default SingleOrder

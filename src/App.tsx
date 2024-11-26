@@ -8,7 +8,6 @@ import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
 
 import Profile from './pages/Profile';
-import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
@@ -18,6 +17,14 @@ import store from './store/store';
 import AddProductPage from './pages/Form/AddProduct';
 import AddCategoryPage from './pages/Form/AddCategory';
 import SingleOrderPage from './pages/SingleOrderPage';
+import { io } from 'socket.io-client';
+
+export const socket = io("http://localhost:3000",{
+  auth:{
+    token: localStorage.getItem('token')
+  }
+}
+);
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);

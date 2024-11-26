@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Category, Initialstate, OrderData, Product, User } from '../types/data';
+import { Category, Initialstate, OrderData, OrderStatus, Product, SingleOrder, User } from '../types/data';
 import { authStatus } from '../types/status';
 import { AppDispatch } from './store';
 import { APIAuthenticated } from '../http';
@@ -20,7 +20,7 @@ const initialState: Initialstate = {
   status: authStatus.loading,
   singleProduct: null,
   category:[],
-  singleOrder:null
+  singleOrder:[]
 };
 interface DeleteOrder {
   orderId: string;
@@ -57,9 +57,16 @@ const dataSlice = createSlice({
     setSingleProduct(state: Initialstate, action: PayloadAction<Product>) {
       state.singleProduct = action.payload;
     },
-    setSingleOrder(state: Initialstate, action: PayloadAction<OrderData>) {
+    setSingleOrder(state: Initialstate, action: PayloadAction<SingleOrder[]>) {
       state.singleOrder = action.payload;
     },
+    updateOrderStatusById(state:Initialstate,action:PayloadAction<{orderId : string, status : OrderStatus}>){
+      const index =  state.singleOrder.findIndex(order=>order.id=action.payload.orderId)
+       if(index !== -1){
+           state.singleOrder[index].Order.orderStatus = action.payload.status 
+           console.log(action.payload.status,"STATUS")
+       }
+   },
     setDeleteOrder(state: Initialstate, action: PayloadAction<DeleteOrder>) {
       const index = state.orders.findIndex(
         (item) => (item.id === action.payload.orderId),
@@ -108,7 +115,8 @@ export const {
   setDeleteProduct,
   setDeleteCategory,
   setCategory,
-  setSingleOrder
+  setSingleOrder,
+  updateOrderStatusById
 } = dataSlice.actions;
 export default dataSlice.reducer;
 
@@ -322,4 +330,20 @@ export function fetchSingleOrder(orderId: string) {
       dispatch(setStatus(authStatus.error));
     }
   };
+}
+export function handleOrderStatusById(status:OrderStatus,id:string){
+  return async function handleOrderStatusThunk(dispatch : AppDispatch){
+      dispatch(setStatus(authStatus.loading))
+      try {
+          const response = await APIAuthenticated.patch('/order/admin/' + id,{orderStatus : status})
+          if(response.status === 200){
+              dispatch(setStatus(authStatus.success))
+              dispatch(updateOrderStatusById({orderId:id,status}))
+          }else{
+              dispatch(setStatus(authStatus.error))
+          }
+      } catch (error) {
+          dispatch(setStatus(authStatus.error))
+      }
+  }
 }
