@@ -23,7 +23,7 @@ const handleOrderStatus=(e:ChangeEvent<HTMLSelectElement>)=>{
   if(id){
     socket.emit('updateOrderStatus',{
       orderId:id,
-      orderStatus:e.target.value,
+      status:e.target.value,
       userId:order?.Order?.userId
     })
   dispatch(handleOrderStatusById(e.target.value as OrderStatus,id))
