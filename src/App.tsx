@@ -20,11 +20,10 @@ import SingleOrderPage from './pages/SingleOrderPage';
 import { io } from 'socket.io-client';
 
 export const socket = io("http://localhost:3000",{
-  auth:{
-    token: localStorage.getItem('token')
+  auth : {
+    token : localStorage.getItem('token')
   }
-}
-);
+})
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);

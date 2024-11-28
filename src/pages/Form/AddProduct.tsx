@@ -34,13 +34,14 @@ const AddProductPage = () => {
   useEffect(()=>{
     fetchcategories()
   },[])
-  const handleChange = (e: ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
-    const { name, value } = e.target
+  const handleChange = (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>)=>{
+    const {name,value,files} = e.target as HTMLInputElement
+
     setData({
-      ...data,
-      [name]: value,
+        ...data,
+        [name] : name == "image" ? files?.[0] : value
     })
-  }
+}
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(addProduct(data))
