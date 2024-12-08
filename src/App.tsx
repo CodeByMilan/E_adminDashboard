@@ -17,6 +17,7 @@ import AddProductPage from './pages/Form/AddProduct';
 import AddCategoryPage from './pages/Form/AddCategory';
 import SingleOrderPage from './pages/SingleOrderPage';
 import { io } from 'socket.io-client';
+import Protected from './Protected';
 
 export const socket = io("http://localhost:3000",{
   auth : {
@@ -57,7 +58,7 @@ function App() {
             <>
              <DefaultLayout>
               <PageTitle title="Dashboard " />
-              <ECommerce />
+             <Protected> <ECommerce /></Protected>
               </DefaultLayout>
             </>
           }
@@ -68,7 +69,7 @@ function App() {
             <>
               <DefaultLayout>
               <PageTitle title="Profile " />
-              <Profile />
+              <Protected><Profile /></Protected>
               </DefaultLayout>
             </>
           }
@@ -79,7 +80,7 @@ function App() {
             <>
             <DefaultLayout>
             <PageTitle title="Add product " />
-            <AddProductPage />
+            <Protected> <AddProductPage /></Protected>
             </DefaultLayout>
             </>
           }
@@ -90,7 +91,7 @@ function App() {
             <>
             <DefaultLayout>
             <PageTitle title="Add Category " />
-            <AddCategoryPage/>
+            <Protected><AddCategoryPage/></Protected>
             </DefaultLayout>
             </>
           }
@@ -101,7 +102,7 @@ function App() {
             <>
              <DefaultLayout>
              <PageTitle title="Tables " />
-             <Tables />
+             <Protected><Tables /></Protected>
              </DefaultLayout>
             </>
           }
@@ -112,7 +113,7 @@ function App() {
             <>
              <DefaultLayout>
              <PageTitle title="single order page" />
-             <SingleOrderPage />
+            <Protected><SingleOrderPage /></Protected> 
              </DefaultLayout>
             </>
           }
