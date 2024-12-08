@@ -32,7 +32,7 @@ const AddCategoryPage = () => {
   }
   return (
     <>
-      <Breadcrumb pageName="Form Layout" />
+      <Breadcrumb pageName="Category" />
 
       <div className="flex items-center justify-center h-screen bg-white overflow-hidden">
         <div

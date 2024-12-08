@@ -192,7 +192,7 @@ useEffect(() => {
                                   (isActive && '!text-white')
                                 }
                               >
-                                eCommerce
+                                Admin Dashboard
                               </NavLink>
                             </li>
                           </ul>
