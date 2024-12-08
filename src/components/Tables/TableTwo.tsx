@@ -15,68 +15,46 @@ const TableTwo = () => {
   }
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="py-6 px-4 md:px-6 xl:px-7.5">
-        <h4 className="text-xl font-semibold text-black dark:text-white">
-          Top Products
-        </h4>
-      </div>
-
-      <div className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-        <div className="col-span-3 flex items-center">
-          <p className="font-medium">Product Name</p>
+    <div className="rounded-lg border border-stroke bg-white shadow-md dark:border-strokedark dark:bg-boxdark">
+    <div className="py-5 px-4 md:px-6 xl:px-8">
+      <h4 className="text-2xl font-semibold text-black dark:text-white">Top Products</h4>
+    </div>
+  
+    <div className="grid grid-cols-7 border-t border-stroke bg-gray-100 py-3 px-4 dark:border-strokedark dark:bg-gray-800 md:px-6 xl:px-8">
+      <div className="col-span-2 text-center font-medium text-gray-600 dark:text-gray-300">Product Image</div>
+      <div className="col-span-1 text-center font-medium text-gray-600 dark:text-gray-300">Product Name</div>
+      <div className="col-span-1 text-center font-medium text-gray-600 dark:text-gray-300">Quantity</div>
+      <div className="col-span-1 text-center font-medium text-gray-600 dark:text-gray-300">Price</div>
+      <div className="col-span-1 text-center font-medium text-gray-600 dark:text-gray-300">Category</div>
+      <div className="col-span-1 text-center font-medium text-gray-600 dark:text-gray-300">Actions</div>
+    </div>
+  
+    {products.map((product, key) => (
+      <div
+        className="grid grid-cols-7 items-center border-t border-stroke py-4 px-4 hover:bg-gray-50 dark:border-strokedark dark:hover:bg-gray-700 md:px-6 xl:px-8"
+        key={key}
+      >
+        <div className="col-span-2 flex items-center justify-center">
+          <img
+            className="h-16 w-16 rounded-md border border-gray-300 object-cover dark:border-strokedark"
+            src={product?.productImageUrl}
+            alt="Product"
+          />
         </div>
-        <div className="col-span-2 hidden items-center sm:flex">
-          <p className="font-medium">product quantity</p>
+        <div className="col-span-1 text-center text-sm text-black dark:text-white">
+          {product?.productName}
         </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Price</p>
+        <div className="col-span-1 text-center text-sm text-black dark:text-white">
+          {product?.productQuantity}
         </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Category Name</p>
+        <div className="col-span-1 text-center text-sm text-black dark:text-white">
+          ${product?.price}
         </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Created At</p>
+        <div className="col-span-1 text-center text-sm text-black dark:text-white">
+          {product?.Category?.categoryName}
         </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Actions</p>
-        </div>
-      </div>
-
-      {products.map((product, key) => (
-        <div
-          className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
-          key={key}
-        >
-          <div className="col-span-3 flex items-center">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="h-12.5 w-15 rounded-md">
-                <img src={product?.productImageUrl} alt="Product" />
-              </div>
-              <p className="text-sm text-black dark:text-white">
-                {product?.productName}
-              </p>
-            </div>
-          </div>
-          <div className="col-span-2 hidden items-center sm:flex">
-            <p className="text-sm text-black dark:text-white">
-              {product?.productQuantity}
-            </p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">
-              ${product?.price}
-            </p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">{product?.Category?.categoryName}</p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-meta-3">{new Date(product?.createdAt).toLocaleDateString()}</p>
-          </div>
-          <div  className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary">
+        <div className="col-span-1 flex justify-center space-x-3">
+        <button className="hover:text-primary">
                       <svg
                         className="fill-current"
                         width="18"
@@ -141,12 +119,12 @@ const TableTwo = () => {
                         />
                       </svg>
                     </button>
-                  </div>
-                  </div>
         </div>
-      ))}
-    </div>
-  );
+      </div>
+    ))}
+  </div>
+  
+);
 };
 
 export default TableTwo;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
-import UserOne from '../../images/user/user-01.png';
+import milan from '../../assets/milan.jpeg'
 import { useAppDispatch } from '../../store/hooks';
 import { setUserLogout } from '../../store/authSlice';
 
@@ -23,13 +23,13 @@ const handlelogout=()=>{
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            Milan Acharya
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">CEO </span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+          <img src={milan} alt="User" />
         </span>
 
         <svg

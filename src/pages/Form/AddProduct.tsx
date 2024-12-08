@@ -3,53 +3,51 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { API } from '../../http';
 import { Category, Product } from '../../types/data';
-import { AddProduct,addProduct } from '../../store/dataSlice';
+import { AddProduct, addProduct } from '../../store/dataSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { authStatus } from '../../types/status';
 
-
 const AddProductPage = () => {
-  const [categories,setCategories]=useState<Category[]>([])
-  const {status}=useAppSelector((state)=>state.datas)
-  const navigate=useNavigate()
-  const dispatch = useAppDispatch()
-  const fetchcategories=async ()=>{
+  const [categories, setCategories] = useState<Category[]>([]);
+  const { status } = useAppSelector((state) => state.datas);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const fetchcategories = async () => {
     const response = await API.get('/category');
-    if(response.status==200){
-      setCategories(response.data.data)
+    if (response.status == 200) {
+      setCategories(response.data.data);
+    } else {
+      setCategories([]);
     }
-    else{
-      setCategories([])
-    }
-
-  }
-  const [data,setData]=useState<AddProduct>({
-    productName:"",
-    description:"",
-    price:0,
-    categoryId:"",
-    image:null,
-    productQuantity:0,
-  })
-  useEffect(()=>{
-    fetchcategories()
-  },[])
-  const handleChange = (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>)=>{
-    const {name,value,files} = e.target as HTMLInputElement
+  };
+  const [data, setData] = useState<AddProduct>({
+    productName: '',
+    description: '',
+    price: 0,
+    categoryId: '',
+    image: null,
+    productQuantity: 0,
+  });
+  useEffect(() => {
+    fetchcategories();
+  }, []);
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    const { name, value, files } = e.target as HTMLInputElement;
 
     setData({
-        ...data,
-        [name] : name == "image" ? files?.[0] : value
-    })
-}
+      ...data,
+      [name]: name == 'image' ? files?.[0] : value,
+    });
+  };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    dispatch(addProduct(data))
-    if(status==authStatus.success){
-      navigate("/tables")
+    e.preventDefault();
+    dispatch(addProduct(data));
+    if (status == authStatus.success) {
+      navigate('/tables');
     }
-    
-  }
+  };
   return (
     <>
       <Breadcrumb pageName="Form Layout" />
@@ -139,11 +137,14 @@ const AddProductPage = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
-              {categories?.length>0 && categories.map((category)=>{
-                return(
-                  <option value={category.id}>{category.categoryName}</option>
-                  )
-              })}
+                {categories?.length > 0 &&
+                  categories.map((category) => {
+                    return (
+                      <option value={category.id}>
+                        {category.categoryName}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 

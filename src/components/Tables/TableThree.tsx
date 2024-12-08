@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteOrder, fetchOrders, setDeleteOrder } from '../../store/dataSlice';
-import { OrderStatus } from '../../types/data';
+import { OrderStatus, PaymentMethod } from '../../types/data';
 import { Link } from 'react-router-dom';
 
 const TableThree = () => {
@@ -15,8 +15,8 @@ const TableThree = () => {
   const handleDelete=(id:string)=>{
     dispatch(deleteOrder(id))
     dispatch(setDeleteOrder({orderId:id}))
- 
   }
+  // console.log(orders)
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -60,20 +60,6 @@ const TableThree = () => {
                   <p className="text-sm">{order?.id}</p>
                   </Link>
                 </td>
-                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <p className="text-sm">{order?.phoneNumber}</p>
-                </td>
-                {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      order?.payment.paymentMethod. === PaymentMethod.khalti
-                        ? 'bg-purple-600 text-purple-50'
-                        : 'bg-white text-black'
-                    }`}
-                  >
-                    {order?.orderStatus}
-                  </p>
-                </td> */}
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
@@ -85,6 +71,24 @@ const TableThree = () => {
                     }`}
                   >
                     {order?.orderStatus}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-sm">{order?.phoneNumber}</p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-sm">{order?.shippingAddress}</p>
+                </td>
+                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p
+                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                      order?.Payment?.paymentMethod === PaymentMethod.khalti
+                        ? 'bg-purple-600 text-purple-50'
+                        : 'bg-white text-black'
+                    }`}
+                  >
+                    {order?.Payment?.paymentMethod}
+                    
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

@@ -1,16 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Category, Initialstate, OrderData, OrderStatus, Product, SingleOrder, User } from '../types/data';
+import {
+  Category,
+  Initialstate,
+  OrderData,
+  OrderStatus,
+  Product,
+  SingleOrder,
+  User,
+} from '../types/data';
 import { authStatus } from '../types/status';
 import { AppDispatch } from './store';
 import { APIAuthenticated } from '../http';
 
-export interface AddProduct{
-  productName:string,
-  price: number,
-  description:string,
-  image: null,
-  categoryId:string,
-  productQuantity:number,
+export interface AddProduct {
+  productName: string;
+  price: number;
+  description: string;
+  image: null;
+  categoryId: string;
+  productQuantity: number;
 }
 
 const initialState: Initialstate = {
@@ -19,22 +27,22 @@ const initialState: Initialstate = {
   orders: [],
   status: authStatus.loading,
   singleProduct: null,
-  category:[],
-  singleOrder:[]
+  category: [],
+  singleOrder: [],
 };
 interface DeleteOrder {
   orderId: string;
 }
 interface DeleteUser {
-userId: string;
+  userId: string;
 }
 
 interface DeleteProduct {
   productId: string;
-  }
-  interface DeleteCategory{
-    categoryId: string;
-   }
+}
+interface DeleteCategory {
+  categoryId: string;
+}
 const dataSlice = createSlice({
   name: 'datas',
   initialState,
@@ -60,46 +68,57 @@ const dataSlice = createSlice({
     setSingleOrder(state: Initialstate, action: PayloadAction<SingleOrder[]>) {
       state.singleOrder = action.payload;
     },
-    updateOrderStatusById(state:Initialstate,action:PayloadAction<{orderId : string, status : OrderStatus}>){
-      const index =  state.singleOrder.findIndex(order=>order.id=action.payload.orderId)
-       if(index !== -1){
-           state.singleOrder[index].Order.orderStatus = action.payload.status 
-           console.log(action.payload.status,"STATUS")
-       }
-   },
+    updateOrderStatusById(
+      state: Initialstate,
+      action: PayloadAction<{ orderId: string; status: OrderStatus }>,
+    ) {
+      const index = state.singleOrder.findIndex(
+        (order) => (order.id = action.payload.orderId),
+      );
+      if (index !== -1) {
+        state.singleOrder[index].Order.orderStatus = action.payload.status;
+        console.log(action.payload.status, 'STATUS');
+      }
+    },
     setDeleteOrder(state: Initialstate, action: PayloadAction<DeleteOrder>) {
       const index = state.orders.findIndex(
-        (item) => (item.id === action.payload.orderId),
+        (item) => item.id === action.payload.orderId,
       );
-      if(index!==-1){
-      state.orders.splice(index, 1);
+      if (index !== -1) {
+        state.orders.splice(index, 1);
       }
     },
     setDeleteUser(state: Initialstate, action: PayloadAction<DeleteUser>) {
       const index = state.users.findIndex(
-        (item) => item.id === action.payload.userId, 
+        (item) => item.id === action.payload.userId,
       );
-    
+
       if (index !== -1) {
-        state.users.splice(index, 1); 
+        state.users.splice(index, 1);
       }
     },
-    setDeleteProduct(state: Initialstate, action: PayloadAction<DeleteProduct>) {
+    setDeleteProduct(
+      state: Initialstate,
+      action: PayloadAction<DeleteProduct>,
+    ) {
       const index = state.products.findIndex(
-        (item) => item.id === action.payload.productId, 
+        (item) => item.id === action.payload.productId,
       );
-    
+
       if (index !== -1) {
-        state.products.splice(index, 1); 
+        state.products.splice(index, 1);
       }
     },
-    setDeleteCategory(state: Initialstate, action: PayloadAction<DeleteCategory>) {
+    setDeleteCategory(
+      state: Initialstate,
+      action: PayloadAction<DeleteCategory>,
+    ) {
       const index = state.category.findIndex(
-        (item) => item.id === action.payload.categoryId, 
+        (item) => item.id === action.payload.categoryId,
       );
-    
+
       if (index !== -1) {
-        state.category.splice(index, 1); 
+        state.category.splice(index, 1);
       }
     },
   },
@@ -116,7 +135,7 @@ export const {
   setDeleteCategory,
   setCategory,
   setSingleOrder,
-  updateOrderStatusById
+  updateOrderStatusById,
 } = dataSlice.actions;
 export default dataSlice.reducer;
 
@@ -177,11 +196,11 @@ export function addProduct(data: AddProduct) {
   return async function addProductThunk(dispatch: AppDispatch) {
     dispatch(setStatus(authStatus.loading));
     try {
-      const response = await APIAuthenticated.post('/admin/product', data,{
+      const response = await APIAuthenticated.post('/admin/product', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      })
+      });
       if (response.status == 200) {
         const { data } = response.data;
         dispatch(setStatus(authStatus.success));
@@ -203,7 +222,7 @@ export function deleteProduct(productId: string) {
       );
       if (response.status == 200) {
         dispatch(setStatus(authStatus.success));
-        dispatch(setDeleteProduct({productId:productId}))
+        dispatch(setDeleteProduct({ productId: productId }));
       } else {
         dispatch(setStatus(authStatus.error));
       }
@@ -248,7 +267,6 @@ export function deleteOrder(orderId: string) {
   };
 }
 
-
 export function DeleteUser(userId: string) {
   return async function deleteUserThunk(dispatch: AppDispatch) {
     dispatch(setStatus(authStatus.loading));
@@ -256,7 +274,7 @@ export function DeleteUser(userId: string) {
       const response = await APIAuthenticated.delete(`/admin/users/${userId}`);
       if (response.status == 200) {
         dispatch(setStatus(authStatus.success));
-        dispatch(setDeleteUser({userId:userId}))
+        dispatch(setDeleteUser({ userId: userId }));
       } else {
         dispatch(setStatus(authStatus.error));
       }
@@ -265,11 +283,11 @@ export function DeleteUser(userId: string) {
     }
   };
 }
-export function addCategory(data:{categoryName:string}) {
+export function addCategory(data: { categoryName: string }) {
   return async function addCategoryThunk(dispatch: AppDispatch) {
     dispatch(setStatus(authStatus.loading));
     try {
-      const response = await APIAuthenticated.post('/admin/category', data)
+      const response = await APIAuthenticated.post('/admin/category', data);
       if (response.status == 200) {
         dispatch(setStatus(authStatus.success));
       } else {
@@ -317,9 +335,7 @@ export function fetchSingleOrder(orderId: string) {
   return async function fetchSingleOrderThunk(dispatch: AppDispatch) {
     dispatch(setStatus(authStatus.loading));
     try {
-      const response = await APIAuthenticated.get(
-        `/order/customer/${orderId}`,
-      );
+      const response = await APIAuthenticated.get(`/order/customer/${orderId}`);
       if (response.status == 200) {
         dispatch(setStatus(authStatus.success));
         dispatch(setSingleOrder(response.data.data));
@@ -331,19 +347,21 @@ export function fetchSingleOrder(orderId: string) {
     }
   };
 }
-export function handleOrderStatusById(status:OrderStatus,id:string){
-  return async function handleOrderStatusThunk(dispatch : AppDispatch){
-      dispatch(setStatus(authStatus.loading))
-      try {
-          const response = await APIAuthenticated.patch('/order/admin/' + id,{orderStatus : status})
-          if(response.status === 200){
-              dispatch(setStatus(authStatus.success))
-              dispatch(updateOrderStatusById({orderId:id,status}))
-          }else{
-              dispatch(setStatus(authStatus.error))
-          }
-      } catch (error) {
-          dispatch(setStatus(authStatus.error))
+export function handleOrderStatusById(status: OrderStatus, id: string) {
+  return async function handleOrderStatusThunk(dispatch: AppDispatch) {
+    dispatch(setStatus(authStatus.loading));
+    try {
+      const response = await APIAuthenticated.patch('/order/admin/' + id, {
+        orderStatus: status,
+      });
+      if (response.status === 200) {
+        dispatch(setStatus(authStatus.success));
+        dispatch(updateOrderStatusById({ orderId: id, status }));
+      } else {
+        dispatch(setStatus(authStatus.error));
       }
-  }
+    } catch (error) {
+      dispatch(setStatus(authStatus.error));
+    }
+  };
 }

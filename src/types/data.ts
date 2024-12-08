@@ -59,6 +59,7 @@ export interface OrderData{
     items:ItemDetails[]
     id:string,
     orderStatus:OrderStatus
+    Payment:Payment
 }
 export interface SingleOrder{
     id: string,
@@ -87,6 +88,9 @@ export interface SingleOrder{
             paymentMethod: string,
             paymentStatus: string
         },
+        User:{
+            username:string
+        }
 
     }
 }

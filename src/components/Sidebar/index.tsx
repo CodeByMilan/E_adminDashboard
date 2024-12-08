@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../images/logo/logo.svg';
+import logo from '../../assets/logo.png'
 import { useAppDispatch } from '../../store/hooks';
 import { fetchOrders, fetchProducts, fetchUsers } from '../../store/dataSlice';
 
@@ -70,9 +70,10 @@ useEffect(() => {
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+      <div className="flex  flex-wrap items-center justify-between gap-2 px-2 py-2 ml-10 lg:py-3">
         <NavLink to="/">
-          <img src={Logo} alt="Logo" />
+          <img src={logo}  className="h-20 w-20"alt="Logo" />
+          <h1 className='flex flex-wrap'>Sajha Page</h1>
         </NavLink>
 
         <button

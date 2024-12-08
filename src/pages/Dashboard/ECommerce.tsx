@@ -9,17 +9,21 @@ import TableOne from '../../components/Tables/TableOne';
 import { useAppSelector } from '../../store/hooks';
 
 const ECommerce: React.FC = () => {
-  const {orders,products,users}=useAppSelector((state)=>state.datas)
-  const counts={
-    ordersCount:orders.length,
-    productsCount:products.length,
-    usersCount:users.length
-
-  }
+  const { orders, products, users } = useAppSelector((state) => state.datas);
+  const counts = {
+    ordersCount: orders.length,
+    productsCount: products.length,
+    usersCount: users.length,
+  };
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total views" total={counts.ordersCount} rate="0.43%" levelUp>
+        <CardDataStats
+          title="Total views"
+          total={counts.ordersCount}
+          rate="0.43%"
+          levelUp
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -38,7 +42,12 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Profit" total={counts.productsCount} rate="4.35%" levelUp>
+        <CardDataStats
+          title="Total Profit"
+          total={counts.productsCount}
+          rate="4.35%"
+          levelUp
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="20"
@@ -61,7 +70,12 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Product" total={counts.productsCount} rate="2.59%" levelUp>
+        <CardDataStats
+          title="Total Product"
+          total={counts.productsCount}
+          rate="2.59%"
+          levelUp
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -80,7 +94,12 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total={counts.usersCount} rate="0.95%" levelDown>
+        <CardDataStats
+          title="Total Users"
+          total={counts.usersCount}
+          rate="0.95%"
+          levelDown
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
