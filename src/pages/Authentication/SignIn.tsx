@@ -12,6 +12,7 @@ const Login = () => {
   const dispatch = useAppDispatch()
   const navigate =useNavigate()
   const {status}=useAppSelector((state)=>state.auth)
+  console.log(status)
   const [userData, setUserData] = useState<UserDataTypes>({
     email: "",
     password: "",
@@ -26,7 +27,9 @@ const Login = () => {
   }
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    dispatch(login(userData))
+    dispatch(login(userData)).then(()=>{
+      navigate('/')
+    })
   }
 
   useEffect(()=>{
@@ -87,18 +90,12 @@ const Login = () => {
                 type="submit"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               >
-                Submit
+                Login
               </button>
             </div>
             <div className="flex justify-center">
               <p className="text-l  text-center pt-5 font-serif px-2 tracking-wider">
 
-                <Link
-                  to="/login"
-                  className="hover:text-blue-600 "
-                >
-                  Login
-                </Link>
               </p>
             </div>
           </form>

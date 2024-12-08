@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import milan from '../../assets/milan.jpeg'
 import { useAppDispatch } from '../../store/hooks';
-import { setUserLogout } from '../../store/authSlice';
+import authSlice, { setStatus, setUserLogout } from '../../store/authSlice';
+import { authStatus } from '../../types/status';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -12,6 +13,7 @@ const DropdownUser = () => {
 const handlelogout=()=>{
   localStorage.removeItem('token');
   dispatch(setUserLogout())
+  dispatch(setStatus(authStatus.loading))
   navigate("/login")
 }
   return (
