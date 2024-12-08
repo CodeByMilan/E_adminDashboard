@@ -53,6 +53,7 @@ function App() {
         />
         
         <Route
+        path='/'
           index
           element={
             <>

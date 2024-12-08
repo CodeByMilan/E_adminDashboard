@@ -14,17 +14,12 @@ const Protected: React.FC<ProtectedProps> = ({ children }) => {
 
   if (!isAuthenticated) {
     return (
-      <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <h2>You need to log in to access this page</h2>
+      <div className="text-center mt-12">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          You need to log in to access this page
+        </h2>
         <button
-          style={{
-            padding: "10px 20px", 
-            backgroundColor: "#007BFF",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
+          className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           onClick={() => navigate("/login")}
         >
           Click here to log in

@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CardDataStats from '../../components/CardDataStats';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import Loader from '../../common/Loader';
+import { fetchCategory, fetchOrders, fetchProducts, fetchUsers } from '../../store/dataSlice';
 
 const ECommerce: React.FC = () => {
   const { orders, products, users } = useAppSelector((state) => state.datas);
+  const dispatch=useAppDispatch()
   const counts = {
     ordersCount: orders.length,
     productsCount: products.length,
     usersCount: users.length,
   };
+  useEffect(()=>{
+    console.log("hello from home")
+    dispatch(fetchProducts())
+    dispatch((fetchCategory))
+    dispatch((fetchOrders))
+    dispatch((fetchUsers))
+  },[dispatch])
   return (
     <>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
