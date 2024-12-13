@@ -13,11 +13,11 @@ import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import AddProductPage from './pages/Form/AddProduct';
 import AddCategoryPage from './pages/Form/AddCategory';
 import SingleOrderPage from './pages/SingleOrderPage';
 import { io } from 'socket.io-client';
 import Protected from './Protected';
+import AddProductPage from './pages/Form/AddProduct';
 
 export const socket = io("http://localhost:3000",{
   auth : {
