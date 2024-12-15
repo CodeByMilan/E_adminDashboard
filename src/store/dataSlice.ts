@@ -4,6 +4,7 @@ import {
   Initialstate,
   OrderData,
   OrderStatus,
+  PaymentStatus,
   Product,
   SingleOrder,
   User,
@@ -80,6 +81,18 @@ const dataSlice = createSlice({
         console.log(action.payload.status, 'STATUS');
       }
     },
+    updatePaymentStatusById(
+      state: Initialstate,
+      action: PayloadAction<{ orderId: string; status: PaymentStatus }>,
+    ) {
+      const index = state.singleOrder.findIndex(
+        (order) => (order.id = action.payload.orderId),
+      );
+      if (index !== -1) {
+        state.singleOrder[index].Order.Payment.paymentStatus = action.payload.status;
+        console.log(action.payload.status, 'STATUS');
+      }
+    },
     setDeleteOrder(state: Initialstate, action: PayloadAction<DeleteOrder>) {
       const index = state.orders.findIndex(
         (item) => item.id === action.payload.orderId,
@@ -136,6 +149,7 @@ export const {
   setCategory,
   setSingleOrder,
   updateOrderStatusById,
+  updatePaymentStatusById
 } = dataSlice.actions;
 export default dataSlice.reducer;
 
@@ -377,6 +391,24 @@ export function handleOrderStatusById(status: OrderStatus, id: string) {
       if (response.status === 200) {
         dispatch(setStatus(authStatus.success));
         dispatch(updateOrderStatusById({ orderId: id, status }));
+      } else {
+        dispatch(setStatus(authStatus.error));
+      }
+    } catch (error) {
+      dispatch(setStatus(authStatus.error));
+    }
+  };
+}
+export function handlePaymentStatusById(status: PaymentStatus, id: string) {
+  return async function handleOrderStatusThunk(dispatch: AppDispatch) {
+    dispatch(setStatus(authStatus.loading));
+    try {
+      const response = await APIAuthenticated.patch('/order/admin/payment/' + id, {
+       paymentStatus : status,
+      });
+      if (response.status === 200) {
+        dispatch(setStatus(authStatus.success));
+        dispatch(updatePaymentStatusById({ orderId: id, status }));
       } else {
         dispatch(setStatus(authStatus.error));
       }

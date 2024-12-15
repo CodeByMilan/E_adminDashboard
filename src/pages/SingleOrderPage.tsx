@@ -1,8 +1,8 @@
 import  { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { deleteOrder, fetchSingleOrder, handleOrderStatusById, setDeleteOrder } from '../store/dataSlice';
-import { OrderStatus } from '../types/data';
+import { deleteOrder, fetchSingleOrder, handleOrderStatusById, handlePaymentStatusById, setDeleteOrder } from '../store/dataSlice';
+import { OrderStatus, PaymentStatus } from '../types/data';
 import { socket } from '../App';
 
 const SingleOrder = () => {
@@ -11,6 +11,7 @@ const SingleOrder = () => {
   const dispatch = useAppDispatch();
   const {singleOrder: [order],} = useAppSelector((state) => state.datas);
   const [orderStatus, setOrderStatus] = useState( order?.Order?.orderStatus as string);
+  const [paymentStatus,setPaymentStatus]=useState(order?.Order?.Payment?.paymentStatus as string)
 
   useEffect(() => {
     if (id) {
@@ -28,6 +29,18 @@ const SingleOrder = () => {
       });
 
       dispatch(handleOrderStatusById(e.target.value as OrderStatus, id));
+    }
+  };
+  const handlePaymentStatus = (e: ChangeEvent<HTMLSelectElement>) => {
+    setPaymentStatus(e.target.value);
+    if (id) {
+      socket.emit('paymentStatusUpdate', {
+        orderId: id,
+        status: e.target.value,
+        userId: order?.Order?.userId,
+      });
+
+      dispatch(handlePaymentStatusById(e.target.value as PaymentStatus, id));
     }
   };
   // console.log(order)
@@ -207,7 +220,7 @@ const SingleOrder = () => {
                       <option value="pending">pending</option>
                       <option value="delivered">Delivered</option>
 
-                      <option value="ontheway">Ontheway</option>
+                      <option value="ontheway">ontheway</option>
                       <option value="preparation">Preparation</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
@@ -222,9 +235,9 @@ const SingleOrder = () => {
                     </label>
                     <select
                       id="countries"
+                      onChange={handlePaymentStatus}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option value="pending">pending</option>
                       <option value="paid">paid</option>
                       <option value="unpaid">unpaid</option>
                     </select>

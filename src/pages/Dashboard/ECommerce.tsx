@@ -13,10 +13,6 @@ const ECommerce: React.FC = () => {
     usersCount: users.length,
   };
   useEffect(()=>{
-<<<<<<< HEAD
-    console.log("hello from home")
-=======
->>>>>>> 4df244c7d52ef5366d83834176fe2210880c674a
     dispatch(fetchProducts())
     dispatch((fetchCategory))
     dispatch((fetchOrders))

@@ -12,7 +12,7 @@ export interface Category{
 }
 export enum OrderStatus{
     PENDING="pending",
-    SHIPPED="shipped",
+    ONTHEWAY="ontheway",
     DELIVERED="delivered",
     CANCELED="canceled",
     PREPARATION="preparation",
@@ -44,8 +44,8 @@ export interface ItemDetails{
 
 }
 export enum PaymentStatus {
-    UNPAID = "unpaid",
-    PAID = "paid",
+    unpaid= "unpaid",
+    paid = "paid",
   }
 interface Payment{
     paymentMethod:PaymentMethod
@@ -86,7 +86,7 @@ export interface SingleOrder{
         userId : string, 
         Payment: {
             paymentMethod: string,
-            paymentStatus: string
+            paymentStatus: PaymentStatus
         },
         User:{
             username:string
