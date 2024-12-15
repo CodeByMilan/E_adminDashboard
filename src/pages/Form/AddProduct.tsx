@@ -5,7 +5,6 @@ import { API } from '../../http';
 import { Category, Product } from '../../types/data';
 import { AddProduct, addProduct } from '../../store/dataSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { authStatus } from '../../types/status';
 
 const AddProductPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);

@@ -212,6 +212,26 @@ export function addProduct(data: AddProduct) {
     }
   };
 }
+export function updateProduct(data: AddProduct,productId:string) {
+  return async function updateProductThunk(dispatch: AppDispatch) {
+    dispatch(setStatus(authStatus.loading));
+    try {
+      const response = await APIAuthenticated.patch(`/product/${productId}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response.status == 200) {
+        const { data } = response.data;
+        dispatch(setStatus(authStatus.success));
+      } else {
+        dispatch(setStatus(authStatus.error));
+      }
+    } catch (error) {
+      dispatch(setStatus(authStatus.error));
+    }
+  };
+}
 
 export function deleteProduct(productId: string) {
   return async function deleteProductThunk(dispatch: AppDispatch) {

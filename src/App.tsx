@@ -18,6 +18,7 @@ import SingleOrderPage from './pages/SingleOrderPage';
 import { io } from 'socket.io-client';
 import Protected from './Protected';
 import AddProductPage from './pages/Form/AddProduct';
+import UpdateProduct from './pages/Form/UpdateProduct';
 
 export const socket = io("http://localhost:3000",{
   auth : {
@@ -93,6 +94,17 @@ function App() {
             <DefaultLayout>
             <PageTitle title="Add Category " />
             <Protected><AddCategoryPage/></Protected>
+            </DefaultLayout>
+            </>
+          }
+        />
+         <Route
+          path="/updateProduct/:id"
+          element={
+            <>
+            <DefaultLayout>
+            <PageTitle title="Update Product " />
+            <Protected><UpdateProduct/></Protected>
             </DefaultLayout>
             </>
           }

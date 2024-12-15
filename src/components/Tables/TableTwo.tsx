@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
 import { deleteProduct, fetchProducts } from '../../store/dataSlice';
+import { Link } from 'react-router-dom';
 
 
 
@@ -35,11 +36,13 @@ const TableTwo = () => {
         key={key}
       >
         <div className="col-span-2 flex items-center justify-center">
+          <Link to={`/updateProduct/${product.id}`}>
           <img
             className="h-16 w-16 rounded-md border border-gray-300 object-cover dark:border-strokedark"
             src={product?.productImageUrl}
             alt="Product"
-          />
+          /></Link>
+        
         </div>
         <div className="col-span-1 text-center text-sm text-black dark:text-white">
           {product?.productName}
@@ -48,7 +51,7 @@ const TableTwo = () => {
           {product?.productQuantity}
         </div>
         <div className="col-span-1 text-center text-sm text-black dark:text-white">
-          ${product?.price}
+          Rs {product?.price}
         </div>
         <div className="col-span-1 text-center text-sm text-black dark:text-white">
           {product?.Category?.categoryName}

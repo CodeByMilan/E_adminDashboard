@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteOrder, fetchOrders, setDeleteOrder } from '../../store/dataSlice';
-import { OrderStatus, PaymentMethod } from '../../types/data';
+import { OrderStatus, PaymentMethod, PaymentStatus } from '../../types/data';
 import { Link } from 'react-router-dom';
 
 const TableThree = () => {
@@ -9,13 +9,21 @@ const TableThree = () => {
   const {orders}=useAppSelector((state)=>state.datas)
   useEffect(()=>{
     dispatch(fetchOrders())
-  },[])
+  },[dispatch])
   console.log(orders)
 
   const handleDelete=(id:string)=>{
     dispatch(deleteOrder(id))
     dispatch(setDeleteOrder({orderId:id}))
   }
+  const statusClasses: { [key in OrderStatus]: string } = {
+    [OrderStatus.DELIVERED]: "text-green-500 bg-green-500",
+    [OrderStatus.CANCELED]: "text-red-500 bg-red-500",
+    [OrderStatus.PENDING]: "text-yellow-500 bg-yellow-500",
+    [OrderStatus.PREPARATION]: "text-blue-500 bg-blue-500",
+    [OrderStatus.ALL]:"text-gray-500 bg-gray-500",
+    [OrderStatus.SHIPPED]:"text-indigo-500 bg-indigo-500"
+  };
   // console.log(orders)
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -41,6 +49,9 @@ const TableThree = () => {
                 Shipping Address
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Payment Status
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Payment Method
               </th>
             
@@ -61,17 +72,9 @@ const TableThree = () => {
                   </Link>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      order?.orderStatus === OrderStatus.DELIVERED
-                        ? 'bg-success text-success'
-                        : order?.orderStatus === OrderStatus.CANCELED
-                        ? 'bg-danger text-danger'
-                        : 'bg-warning text-warning'
-                    }`}
-                  >
-                    {order?.orderStatus}
-                  </p>
+                <p className={`inline-flex rounded-full bg-opacity-40 py-1 px-3 text-sm font-medium ${statusClasses[order?.orderStatus]}`}>
+  {order?.orderStatus}
+</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p className="text-sm">{order?.phoneNumber}</p>
@@ -79,16 +82,23 @@ const TableThree = () => {
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p className="text-sm">{order?.shippingAddress}</p>
                 </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p  className={`inline-flex rounded-full  py-1 px-3 text-sm font-medium ${
+                      order?.Payment?.paymentStatus=== PaymentStatus.PAID
+                        ? 'bg-green-400 text-white'
+                        : 'bg-red-500 text-white'
+                    }`}>{order?.Payment?.paymentStatus}</p>
+                </td>
                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      order?.Payment?.paymentMethod === PaymentMethod.khalti
-                        ? 'bg-purple-600 text-purple-50'
+                    className={`inline-flex rounded-full  py-1 px-3 text-sm font-medium ${
+                      order?.Payment?.paymentMethod === PaymentMethod.Khalti
+                        ? 'bg-[#5E338D] text-white'
                         : 'bg-white text-black'
                     }`}
                   >
                     {order?.Payment?.paymentMethod}
-                    
+                
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

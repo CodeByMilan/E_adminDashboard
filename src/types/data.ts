@@ -35,18 +35,18 @@ export interface Product{
     Category?:Category
 }
 export enum PaymentMethod{
-    cod="cod",
-    khalti="khalti"
+    COD="COD",
+    Khalti="Khalti"
 }
 export interface ItemDetails{
     productId:string,
     quantity:number
 
 }
-export interface PaymentStatus{
-    unpaid:"unpaid",
-    paid:"paid"
-}
+export enum PaymentStatus {
+    UNPAID = "unpaid",
+    PAID = "paid",
+  }
 interface Payment{
     paymentMethod:PaymentMethod
     paymentStatus:PaymentStatus
