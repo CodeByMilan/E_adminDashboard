@@ -18,13 +18,15 @@ interface User {
 interface AuthState {
   user: User ;
   status: string;
-  token:string|null
 }
 
 const initialState: AuthState = {
-  user: {} as User,
+  user: {
+    email: '',
+    password: '',
+    token: localStorage.getItem('token') || '', 
+  } as User,
   status: authStatus.loading,
-  token: null
 
 };
 const authSlice = createSlice({
@@ -45,7 +47,6 @@ const authSlice = createSlice({
     state.user.token = action.payload
     },
     setUserLogout(state:AuthState){
-      state.token=null
       state.user={
         username:null,
         email:null,
