@@ -33,6 +33,7 @@ export interface Product{
     userId:string,
     User?:User,
     Category?:Category
+    categoryName?:string
 }
 export enum PaymentMethod{
     COD="COD",

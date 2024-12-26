@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteOrder, fetchOrders, setDeleteOrder } from '../../store/dataSlice';
 import { OrderStatus, PaymentMethod, PaymentStatus } from '../../types/data';
@@ -24,6 +24,34 @@ const TableThree = () => {
     [OrderStatus.ALL]:"text-gray-500 bg-gray-500",
     [OrderStatus.ONTHEWAY]:"text-indigo-500 bg-indigo-500"
   };
+
+  const {searchQuery} = useAppSelector((state) => state.search);
+  // Filter products based on search query
+  const filteredOrders = searchQuery
+  ? orders.filter((od) => {
+      const shippingAddressMatch = od?.shippingAddress
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase());
+
+      const paymentStatusMatch = od?.Payment?.paymentStatus
+        ?.toString()
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+        const paymentMethodMatch = od?.Payment?.paymentMethod
+        ?.toString()
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+
+      const orderStatusMatch = od?.orderStatus
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const phoneNumberMatch = od?.phoneNumber.toString()
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase());
+
+      return shippingAddressMatch || paymentStatusMatch || orderStatusMatch || paymentMethodMatch || phoneNumberMatch;
+    })
+  : orders;
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -60,7 +88,7 @@ const TableThree = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.length>0 &&orders.map((order, key) => (
+            {filteredOrders.length>0 ? filteredOrders.map((order, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -171,7 +199,14 @@ const TableThree = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+            )):
+            (
+              <tr>
+                <td colSpan={7} className="text-center py-4">
+                  No orders found matching your search.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

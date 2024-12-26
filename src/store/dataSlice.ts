@@ -11,7 +11,7 @@ import {
 } from '../types/data';
 import { authStatus } from '../types/status';
 import { AppDispatch } from './store';
-import { APIAuthenticated } from '../http';
+import {  APIAuthenticated } from '../http';
 
 export interface AddProduct {
   productName: string;
@@ -177,7 +177,6 @@ export function fetchOrders() {
     try {
       const response = await APIAuthenticated.get('/order/admin');
       if (response.status == 200) {
-        const { data } = response.data;
         dispatch(setStatus(authStatus.success));
         dispatch(setOrders(response.data.data));
       } else {
@@ -194,7 +193,6 @@ export function fetchUsers() {
     try {
       const response = await APIAuthenticated.get('/admin/users');
       if (response.status == 200) {
-        const { data } = response.data;
         dispatch(setStatus(authStatus.success));
         dispatch(setUsers(response.data.data));
       } else {
@@ -218,6 +216,23 @@ export function addProduct(data: AddProduct) {
       if (response.status == 200) {
         const { data } = response.data;
         dispatch(setStatus(authStatus.success));
+      } else {
+        dispatch(setStatus(authStatus.error));
+      }
+    } catch (error) {
+      dispatch(setStatus(authStatus.error));
+    }
+  };
+}
+export function fetchTopProducts() {
+  return async function fetchTopProductsThunk(dispatch: AppDispatch) {
+    dispatch(setStatus(authStatus.loading));
+    try {
+      const response = await APIAuthenticated.get("/product/top");
+      if (response.status == 200) {
+        const { data } = response.data;
+        dispatch(setStatus(authStatus.success));
+        dispatch(setProducts(data));
       } else {
         dispatch(setStatus(authStatus.error));
       }

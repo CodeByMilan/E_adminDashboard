@@ -24,7 +24,7 @@ const initialState: AuthState = {
   user: {
     email: '',
     password: '',
-    token: localStorage.getItem('token') || '', 
+    token:localStorage.getItem('token') || '', 
   } as User,
   status: authStatus.loading,
 

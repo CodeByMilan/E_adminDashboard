@@ -3,9 +3,13 @@ import CardDataStats from '../../components/CardDataStats';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import Loader from '../../common/Loader';
 import { fetchCategory, fetchOrders, fetchProducts, fetchUsers } from '../../store/dataSlice';
+import TopProducts from '../../components/Tables/TopProducts';
 
 const ECommerce: React.FC = () => {
   const { orders, products, users } = useAppSelector((state) => state.datas);
+  const {user}=useAppSelector((state)=>state.auth)
+  const token =user.token
+  // console.log(user.token)
   const dispatch=useAppDispatch()
   const counts = {
     ordersCount: orders.length,
@@ -13,11 +17,13 @@ const ECommerce: React.FC = () => {
     usersCount: users.length,
   };
   useEffect(()=>{
-    dispatch(fetchProducts())
-    dispatch((fetchCategory))
-    dispatch((fetchOrders))
-    dispatch((fetchUsers))
-  },[dispatch])
+    if(token){
+      dispatch(fetchProducts)
+      dispatch(fetchCategory)
+      dispatch(fetchOrders)
+      dispatch(fetchUsers)
+    }
+  },[token,dispatch])
   return (
     <>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
@@ -98,7 +104,7 @@ const ECommerce: React.FC = () => {
         </CardDataStats>
       </div>
       <div className='h-2 w-full'>
-        <Loader/>
+        <TopProducts/>
       </div>
     </>
   );

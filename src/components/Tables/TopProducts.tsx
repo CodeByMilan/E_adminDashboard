@@ -1,31 +1,23 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
-import { deleteProduct, fetchProducts } from '../../store/dataSlice';
+import { deleteProduct, fetchProducts, fetchTopProducts } from '../../store/dataSlice';
 import { Link } from 'react-router-dom';
-
 
 
 const TableTwo = () => {
   const  dispatch =useAppDispatch()
   const {products}=useAppSelector((state)=>state.datas)
   useEffect(()=>{
-    dispatch(fetchProducts())
+    dispatch(fetchTopProducts())
   },[])
   const handleDelete=(id:string)=>{
     dispatch(deleteProduct(id))
   }
-  const {searchQuery} = useAppSelector((state) => state.search);
-   // Filter products based on search query
-   const filteredProducts = searchQuery
-   ? products.filter((pd) =>
-       pd?.productName.toLowerCase().includes(searchQuery.toLowerCase())||pd?.price.toString().includes(searchQuery)||pd?.Category?.categoryName.toLowerCase().includes(searchQuery.toLowerCase())||pd?.productQuantity.toString().includes(searchQuery)
-     )
-   : products;
 
   return (
     <div className="rounded-lg border border-stroke bg-white shadow-md dark:border-strokedark dark:bg-boxdark">
     <div className="py-5 px-4 md:px-6 xl:px-8">
-      <h4 className="text-2xl font-semibold text-black dark:text-white">Products</h4>
+      <h4 className="text-2xl font-semibold text-black dark:text-white">Top Products</h4>
     </div>
   
     <div className="grid grid-cols-7 border-t border-stroke bg-gray-100 py-3 px-4 dark:border-strokedark dark:bg-gray-800 md:px-6 xl:px-8">
@@ -37,7 +29,7 @@ const TableTwo = () => {
       <div className="col-span-1 text-center font-medium text-gray-600 dark:text-gray-300">Actions</div>
     </div>
   
-    {filteredProducts.map((product, key) => (
+    {products.map((product, key) => (
       <div
         className="grid grid-cols-7 items-center border-t border-stroke py-4 px-4 hover:bg-gray-50 dark:border-strokedark dark:hover:bg-gray-700 md:px-6 xl:px-8"
         key={key}
@@ -61,7 +53,7 @@ const TableTwo = () => {
           Rs {product?.price}
         </div>
         <div className="col-span-1 text-center text-sm text-black dark:text-white">
-          {product?.Category?.categoryName}
+          {product?.categoryName}
         </div>
         <div className="col-span-1 flex justify-center space-x-3">
         <button className="hover:text-primary">
