@@ -48,8 +48,11 @@ const TableThree = () => {
       const phoneNumberMatch = od?.phoneNumber.toString()
         ?.toLowerCase()
         .includes(searchQuery.toLowerCase());
+        const orderIdMatch = od?.id.toString()
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
 
-      return shippingAddressMatch || paymentStatusMatch || orderStatusMatch || paymentMethodMatch || phoneNumberMatch;
+      return shippingAddressMatch || paymentStatusMatch || orderStatusMatch || paymentMethodMatch || phoneNumberMatch|| orderIdMatch;
     })
   : orders;
   return (
