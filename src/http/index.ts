@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const APIAuthenticated=axios.create({
-    baseURL: 'http://localhost:3000/',
+    baseURL: 'https://e-backend-pzfw.onrender.com/',
     headers:{
         'Content-Type': 'application/json',
         'Accept':'application/json',
@@ -9,7 +9,7 @@ const APIAuthenticated=axios.create({
     }
 })
 const API=axios.create({
-    baseURL: 'http://localhost:3000/',
+    baseURL: 'https://e-backend-pzfw.onrender.com/',
     headers:{
         'Content-Type': 'application/json',
         'Accept':'application/json',
