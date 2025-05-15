@@ -10,7 +10,7 @@ const TableThree = () => {
   useEffect(()=>{
     dispatch(fetchOrders())
   },[dispatch])
-  console.log(orders)
+  // console.log(orders)
 
   const handleDelete=(id:string)=>{
     dispatch(deleteOrder(id))
@@ -30,6 +30,9 @@ const TableThree = () => {
   const filteredOrders = searchQuery
   ? orders.filter((od) => {
       const shippingAddressMatch = od?.shippingAddress
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase());
+        const createdAtMatch = od?.createdAt
         ?.toLowerCase()
         .includes(searchQuery.toLowerCase());
 
@@ -82,6 +85,9 @@ const TableThree = () => {
                 Payment Status
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Created At
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Payment Method
               </th>
             
@@ -112,6 +118,9 @@ const TableThree = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p className="text-sm">{order?.shippingAddress}</p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-sm">{order?.createdAt}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p  className={`inline-flex rounded-full  py-1 px-3 text-sm font-medium ${

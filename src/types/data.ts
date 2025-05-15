@@ -61,6 +61,7 @@ export interface OrderData{
     id:string,
     orderStatus:OrderStatus
     Payment:Payment
+    createdAt : string,
 }
 export interface SingleOrder{
     id: string,
