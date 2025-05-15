@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
-import { DeleteUser, fetchUsers, setDeleteUser } from '../../store/dataSlice';
+import { DeleteUser, fetchUsers } from '../../store/dataSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 
 

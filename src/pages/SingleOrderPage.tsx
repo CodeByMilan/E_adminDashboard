@@ -1,9 +1,9 @@
-import  { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { deleteOrder, fetchSingleOrder, handleOrderStatusById, handlePaymentStatusById, setDeleteOrder } from '../store/dataSlice';
-import { OrderStatus, PaymentStatus } from '../types/data';
 import { socket } from '../App';
+import { deleteOrder, fetchSingleOrder, handleOrderStatusById, handlePaymentStatusById, setDeleteOrder } from '../store/dataSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { OrderStatus, PaymentStatus } from '../types/data';
 
 const SingleOrder = () => {
   const { id } = useParams();

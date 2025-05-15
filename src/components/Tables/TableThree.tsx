@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { deleteOrder, fetchOrders, setDeleteOrder } from '../../store/dataSlice';
-import { OrderStatus, PaymentMethod, PaymentStatus } from '../../types/data';
 import { Link } from 'react-router-dom';
+import { deleteOrder, fetchOrders, setDeleteOrder } from '../../store/dataSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { OrderStatus, PaymentMethod, PaymentStatus } from '../../types/data';
 
 const TableThree = () => {
   const  dispatch =useAppDispatch()
@@ -55,7 +55,7 @@ const TableThree = () => {
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
 
-      return shippingAddressMatch || paymentStatusMatch || orderStatusMatch || paymentMethodMatch || phoneNumberMatch|| orderIdMatch;
+      return shippingAddressMatch || paymentStatusMatch || orderStatusMatch || paymentMethodMatch || phoneNumberMatch|| orderIdMatch||createdAtMatch;
     })
   : orders;
   return (
