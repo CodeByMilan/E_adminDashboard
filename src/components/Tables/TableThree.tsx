@@ -119,15 +119,16 @@ const TableThree = () => {
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p className="text-sm">{order?.shippingAddress}</p>
                 </td>
-                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <p className="text-sm">{order?.createdAt}</p>
-                </td>
+              
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p  className={`inline-flex rounded-full  py-1 px-3 text-sm font-medium ${
                       order?.Payment?.paymentStatus=== PaymentStatus.paid
                         ? 'bg-green-400 text-white'
                         : 'bg-red-500 text-white'
                     }`}>{order?.Payment?.paymentStatus}</p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-sm">{order?.createdAt}</p>
                 </td>
                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
@@ -141,6 +142,7 @@ const TableThree = () => {
                 
                   </p>
                 </td>
+                
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <button className="hover:text-primary">
